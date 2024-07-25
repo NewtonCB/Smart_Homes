@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:renting_app/dashboard/presentation/themes/config.dart';
+import 'package:get/get.dart';
+import 'package:renting_app/posting_page/post_view.dart';
+import 'package:renting_app/dashboard/presentation/pages/home/view/home.dart';
 
 class FloatingActionButtonWithBottomNav extends StatefulWidget {
-  const FloatingActionButtonWithBottomNav({super.key});
+  const FloatingActionButtonWithBottomNav({Key? key}) : super(key: key);
 
   @override
-  _FloatingActionButtonWithBottomNavState createState() => _FloatingActionButtonWithBottomNavState();
+  _FloatingActionButtonWithBottomNavState createState() =>
+      _FloatingActionButtonWithBottomNavState();
 }
 
-class _FloatingActionButtonWithBottomNavState extends State<FloatingActionButtonWithBottomNav> {
+class _FloatingActionButtonWithBottomNavState
+    extends State<FloatingActionButtonWithBottomNav> {
   bool _showBottomNav = false;
 
   @override
@@ -22,27 +28,20 @@ class _FloatingActionButtonWithBottomNavState extends State<FloatingActionButton
                 _showBottomNav = true;
               });
             },
-            child: const Icon(
-              color: Colors.white,
-                Icons.menu
-            ),
+            child: const Icon(Icons.menu, color: kButtonSecondaryColor),
           ),
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
-          bottom: _showBottomNav ? 0 : - kBottomNavigationBarHeight - 16, // Adjust the value for padding
-          left: 16, // Add left margin
-          right: 0, // Add right margin
-
-
+          bottom: _showBottomNav ? 0 : -kBottomNavigationBarHeight - 16, // Adjust the value for padding
+          left: 35, // Add left margin
+          right: 15, // Add right margin
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16), // Add margin space
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8), // Increase opacity for shadow
-                  spreadRadius: 4, // Increase spread radius for shadow
+                  spreadRadius: 10, // Increase spread radius for shadow
                   blurRadius: 10, // Increase blur radius for shadow
                   offset: const Offset(0, 3),
                 ),
@@ -57,19 +56,37 @@ class _FloatingActionButtonWithBottomNavState extends State<FloatingActionButton
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.dynamic_feed),
-                  label: 'Chats',
+                  label: 'feeds',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add_a_photo),
+                  label: 'upload',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
-                  label: 'Messages',
+                  label: 'profile',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.arrow_back),
-                  label: 'Search',
+                  label: 'back',
                 ),
               ],
               onTap: (index) {
-                // Handle navigation to different screens here
+
+                  switch (index) {
+                  case 0:
+                  // Navigate to Home Page
+                    Get.toNamed('/home');
+                  break;
+                  case 1:
+                  // Navigate to Settings Page
+                    Get.toNamed('/add_photo');
+                  break;
+                  default:
+                  // Default case if needed
+                  break;
+                  }
+
                 setState(() {
                   _showBottomNav = false;
                 });
@@ -77,8 +94,8 @@ class _FloatingActionButtonWithBottomNavState extends State<FloatingActionButton
             ),
           ),
         ),
-
       ],
     );
   }
 }
+

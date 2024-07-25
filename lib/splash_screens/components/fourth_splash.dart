@@ -66,17 +66,20 @@ class FourthSplash extends StatelessWidget {
                 position: _welcomeImageAnimation,
                 child: Container(
                   constraints:
-                      const BoxConstraints(maxWidth: 350, maxHeight: 350),
+                      const BoxConstraints(maxWidth: 350, maxHeight: 300),
                   child: Image.asset(
-                    'assets/splash_covers/splash_3.jpg',
+                    'assets/splash_covers/splash_4.png',
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 30,
+              ),
               SlideTransition(
                 position: _welcomeFirstHalfAnimation,
                 child: const Text(
-                  "Welcome",
+                  "Welcome Back",
                   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -84,7 +87,7 @@ class FourthSplash extends StatelessWidget {
                 padding:
                     EdgeInsets.only(left: 64, right: 64, top: 16, bottom: 16),
                 child: Text(
-                  "Stay organised and live stress-free with you-do app",
+                  "Utilize an app to the level of being contracted",
                   textAlign: TextAlign.center,
                 ),
               ),

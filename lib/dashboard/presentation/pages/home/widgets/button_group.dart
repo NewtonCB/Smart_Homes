@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:renting_app/dashboard/presentation/components/button.dart';
-import 'package:renting_app/dashboard/presentation/themes/colors.dart';
-import 'package:renting_app/dashboard/presentation/themes/config.dart';
+import 'package:get/get.dart';
+import 'package:renting_app/landlords_agents/agents/agents_view.dart';
+import 'package:renting_app/landlords_agents/landlords/landlords_view.dart';
 
 class ButtonGroup__widget extends StatelessWidget {
   const ButtonGroup__widget({super.key});
@@ -14,13 +15,15 @@ class ButtonGroup__widget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+
           Expanded(
             child: Accent__Button__Medium(
               text: 'Landlords',
               leftIconVisibility: false,
               rightIconVisibility: false,
-              onTap: () {},
-
+              onTap: () {
+                Get.to(const LandLordsPage()); // Navigate to the SecondScreen when the button is tapped
+              },
             ),
           ),
           const SizedBox(width: 8),
@@ -29,7 +32,9 @@ class ButtonGroup__widget extends StatelessWidget {
               text: 'Agents',
               leftIconVisibility: false,
               rightIconVisibility: false,
-              onTap: () {},
+              onTap: () {
+                Get.to(const AgentsPage()); // Navigate to the ThirdScreen when the button is tapped
+              },
             ),
           ),
         ],

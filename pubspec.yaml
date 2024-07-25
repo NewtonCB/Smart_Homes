@@ -1,7 +1,9 @@
 name: renting_app
 description: "A new Flutter project."
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
+
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -30,34 +32,44 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   font_awesome_flutter:
   flutter_rating_bar:
   intl:
   animations:
   flutter_svg:
-
-
+  get:
+  form_validator:  # Form validation
+  image_picker: ^0.8.4+4   # For profile picture (optional)
+  google_maps_flutter:   # For Google Maps location picker (optional)
+  animated_login: ^1.7.2
+  intl_phone_number_input:
+  firebase_core:
+  flutter_cube: ^0.1.1
+  cloud_firestore:
+  firebase_storage:
+  firebase_database: ^11.0.2
+  geolocator: ^9.0.0
+#  location: ^4.4.0  # Add this line
+  firebase_auth:
+  url_launcher: ^6.2.6
+  shimmer:
+  loading_animation_widget: ^1.2.1
+  scroll_to_index:
+  multiple_images_picker:
+  multi_image_picker_view:
 
 
 dev_dependencies:
   flutter_test:
-#  build_runner:
-#  flutter_gen_runner:
-
-
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_rating_bar: ^4.0.0
 
 #  flutter_gen:
 
@@ -79,6 +91,7 @@ flutter:
 
   assets:
     - assets/splash_covers/
+    - assets/cube/
     - assets/img/
     - assets/icons/
     - assets/images/

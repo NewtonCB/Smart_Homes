@@ -111,7 +111,7 @@ class ScreenDetails extends StatelessWidget {
           )
         ],
       ),
-      floatingActionButton: const FloatingActionButtonWithBottomNav(), // Use the custom widget as the floatingActionButton
+      floatingActionButton: FloatingActionButtonWithBottomNav(), // Use the custom widget as the floatingActionButton
     );
   }
 }

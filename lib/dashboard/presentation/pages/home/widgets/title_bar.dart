@@ -20,10 +20,10 @@ class TitleBar__widget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const FeedScreen()), // Navigate to FeedScreen
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const FeedScreen()), // Navigate to FeedScreen
+          // );
         },
         child: Row(
           children: <Widget>[

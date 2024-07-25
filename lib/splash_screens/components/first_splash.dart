@@ -26,63 +26,86 @@ class _FirstSplashState extends State<FirstSplash> {
     return SlideTransition(
       position: _introductionanimation,
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                'assets/splash_covers/log.png',
-                fit: BoxFit.cover,
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 170,
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Text(
-                "Your welcome!",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 64, right: 64),
-              child: Text(
-                "Welcome to SmartHomes application where you can feed all of your needs "
-                "concerning to home ",
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(
-              height: 48,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom + 16),
-              child: InkWell(
-                onTap: () {
-                  widget.animationController.animateTo(0.2);
-                },
-                child: Container(
-                  height: 58,
-                  padding: const EdgeInsets.only(
-                    left: 56.0,
-                    right: 56.0,
-                    top: 16,
-                    bottom: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(38.0),
-                    color: const Color(0xff132137),
-                  ),
-                  child: const Text(
-                    "lets start",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+              Center(
+                child: SizedBox(
+                  height: 120, // Adjust the height as needed
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.4), // Shadow color
+                          spreadRadius: 5, // Spread radius
+                          blurRadius: 7, // Blur radius
+                          offset: const Offset(1, 3), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: Image.asset(
+                      'assets/img/mylogo.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+
+              const SizedBox(
+                height: 40,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Text(
+                  "Your welcome!",
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 64, right: 64),
+                child: Text(
+                  "Welcome to SmartRental  application where you can feed all of your needs "
+                  "concerning to home ",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(
+                height: 48,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom + 16),
+                child: InkWell(
+                  onTap: () {
+                    widget.animationController.animateTo(0.2);
+                  },
+                  child: Container(
+                    height: 58,
+                    padding: const EdgeInsets.only(
+                      left: 56.0,
+                      right: 56.0,
+                      top: 16,
+                      bottom: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(38.0),
+                      color: const Color(0xff132137),
+                    ),
+                    child: const Text(
+                      "lets start",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

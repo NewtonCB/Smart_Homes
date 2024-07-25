@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875998543044",
+    "project_id": "houserental-29ec3",
+    "storage_bucket": "houserental-29ec3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875998543044:android:3dcc70fc4adc63102ddd91",
+        "android_client_info": {
+          "package_name": "com.example.renting_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBt8JfGKZH6i6boZ3r4Bn_cDq5fXbWIxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

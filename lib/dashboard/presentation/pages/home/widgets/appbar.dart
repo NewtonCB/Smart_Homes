@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:renting_app/dashboard/gen/assets.gen.dart';
-import 'package:renting_app/dashboard/presentation/components/text.dart';
+import 'package:get/get.dart'; // Import GetX package
 import 'package:renting_app/dashboard/presentation/themes/colors.dart';
-import 'package:renting_app/dashboard/presentation/themes/config.dart';
+import 'package:renting_app/registration_login/view/registration_view.dart'; // Import your registration screen
 
 PreferredSize appbar__widget() {
   return PreferredSize(
@@ -23,9 +22,9 @@ PreferredSize appbar__widget() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '2KonecT',
+              'smartRENTAL',
               style: TextStyle(
-                fontSize: 24, // Adjust font size as needed
+                fontSize: 20, // Adjust font size as needed
                 fontWeight: FontWeight.bold, // Use heavy bold
                 color: kColorText1,
                 shadows: [
@@ -37,13 +36,12 @@ PreferredSize appbar__widget() {
                 ],
               ),
             ),
-
             const Spacer(),
-            GestureDetector(
-              onTap: () {
-                // Handle sign up action
+            IconButton(
+              onPressed: () {
+                Get.to(() =>  RegistrationPage()); // Navigate to RegistrationScreen
               },
-              child: const CircleAvatar(
+              icon: const CircleAvatar(
                 radius: 15,
                 backgroundColor: kColorPrimary,
                 child: Icon(

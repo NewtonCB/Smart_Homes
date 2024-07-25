@@ -3,7 +3,7 @@ import 'package:renting_app/models/comment_model.dart';
 import 'package:renting_app/models/post_model.dart';
 
 class ViewPostScreen extends StatefulWidget {
-  final Post post;
+  final Post post; 
 
   const ViewPostScreen({super.key, required this.post});
 

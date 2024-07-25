@@ -5,8 +5,10 @@ import 'package:renting_app/splash_screens/components/first_splash.dart';
 import 'package:renting_app/splash_screens/components/top_skip_back.dart';
 import 'package:renting_app/splash_screens/components/fourth_splash.dart';
 import 'package:renting_app/dashboard/presentation/pages/home/view/home.dart';
+import 'package:renting_app/dashboard/dashboard_view/main_view/dash_view.dart';
 // import 'package:renting_app/screens/feed_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -110,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen>
   void _signUpClick() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ScreenHome()),
+      MaterialPageRoute(builder: (context) =>  DashboardPage()),
     );
   }
 
