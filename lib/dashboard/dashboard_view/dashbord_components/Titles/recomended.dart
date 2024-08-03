@@ -25,7 +25,7 @@ class Recommended extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Get.to(() => const FeedPage(), binding: BindingsBuilder(() {
+              Get.to(() =>  FeedPage(), binding: BindingsBuilder(() {
               }));
             },
             child: const Text(

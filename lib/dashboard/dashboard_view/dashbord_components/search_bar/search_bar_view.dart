@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:renting_app/dashboard/dashboard_view/feed_page/feed_page_view.dart';
+import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
 
 class SearchBarWithFilter extends StatelessWidget {
+  final TextEditingController controller;
+
+  SearchBarWithFilter({required this.controller});
+
   @override
   Widget build(BuildContext context) {
+    final CustomSearchController searchController = Get.find();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -21,6 +30,7 @@ class SearchBarWithFilter extends StatelessWidget {
                 ],
               ),
               child: TextField(
+                controller: controller,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -52,6 +62,13 @@ class SearchBarWithFilter extends StatelessWidget {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                onChanged: (value) {
+                  searchController.updateSearchQuery(value);
+                },
+                onSubmitted: (value) {
+                  searchController.updateSearchQuery(value);
+                  Get.to(() => FeedPage()); // Navigate to FeedPage on search submit
+                },
               ),
             ),
           ),

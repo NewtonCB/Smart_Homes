@@ -37,12 +37,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Renting App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+        colorScheme:ColorScheme.fromSeed(seedColor: Colors.white70)
         // You can add any other theme configurations here
       ),
       home: const SplashScreen(),
       getPages: [
-        GetPage(name: '/home', page: () => ScreenHome()),
+        GetPage(name: '/home', page: () => const ScreenHome()),
         // GetPage(name: '/newsFeed', page: () => ChatsScreen()),
         GetPage(name: '/add_photo', page: () =>  PostingPage()),
         // GetPage(name: '/profile', page: () => MessagesScreen()),

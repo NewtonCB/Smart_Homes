@@ -1,19 +1,19 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:renting_app/posting_page/post_model.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class PostingPageController extends GetxController {
   var name = ''.obs;
   var phoneNumber = ''.obs;
-  var title = ''.obs;
+  var title = 'Choose Type of Property'.obs;
   var description = ''.obs;
   var rentAmount = ''.obs;
-  var rentPeriod = 'Per Month'.obs;
+  var rentPeriod = 'Choose Rent Period'.obs;
   var selectedDistrict = 'Ilala'.obs;
   var location = Location(latitude: 0, longitude: 0).obs;
   var selectedImages = <XFile>[].obs;
@@ -21,7 +21,7 @@ class PostingPageController extends GetxController {
 
   final ImagePicker picker = ImagePicker();
 
-  // Function to pick images one by one
+  // Function to pick images
   Future<void> pickImages() async {
     final List<XFile>? images = await picker.pickMultiImage();
     if (images != null) {
@@ -44,7 +44,30 @@ class PostingPageController extends GetxController {
     }
   }
 
+  Future<List<String>> uploadImages(List<XFile> images) async {
+    List<String> imageUrls = [];
+    try {
+      final storage = FirebaseStorage.instance;
+      for (var image in images) {
+        final ref = storage.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}_${image.name}');
+
+        print('Uploading ${image.name} to Firebase Storage'); // Debug statement
+        await ref.putFile(File(image.path));
+
+        final url = await ref.getDownloadURL();
+        print('Uploaded ${image.name}, URL: $url'); // Debug statement
+        imageUrls.add(url);
+      }
+    } catch (e) {
+      print('Failed to upload images: $e');
+    }
+    return imageUrls;
+  }
+
   Future<void> uploadPost(BuildContext context) async {
+    // Get image URLs after uploading
+    List<String> imageUrls = await uploadImages(selectedImages);
+
     final newPost = PostModel(
       name: name.value,
       phoneNumber: phoneNumber.value,
@@ -55,8 +78,11 @@ class PostingPageController extends GetxController {
       district: selectedDistrict.value,
       location: location.value,
       amenities: amenities.toList(),
-      images: selectedImages.map((image) => image.path).toList(),
+      images: imageUrls,
+      timestamp: DateTime.now().toIso8601String(),
     );
+
+    print('New Post Data: ${newPost.toJson()}'); // Debug statement
 
     try {
       await FirebaseDatabase.instance.ref().child('posts').push().set(newPost.toJson());
@@ -77,12 +103,13 @@ class PostingPageController extends GetxController {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
+                  // Clear form data
                   name.value = '';
                   phoneNumber.value = '';
-                  title.value = '';
+                  title.value = 'Choose Type of Property';
                   description.value = '';
                   rentAmount.value = '';
-                  rentPeriod.value = 'Per Month';
+                  rentPeriod.value = 'Choose Rent Period';
                   selectedDistrict.value = 'Ilala';
                   location.value = Location(latitude: 0, longitude: 0);
                   selectedImages.clear();

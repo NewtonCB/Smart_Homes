@@ -131,14 +131,11 @@ class _PostingPageState extends State<PostingPage> {
                   }),
                   const SizedBox(height: 10),
                   Obx(() {
-                    final TextEditingController titleController = TextEditingController(text: controller.title.value);
-                    titleController.selection = TextSelection.fromPosition(TextPosition(offset: titleController.text.length));
-                    return TextFormField(
-                      controller: titleController,
-                      onChanged: (value) => controller.title.value = value,
+                    return DropdownButtonFormField<String>(
+                      value: controller.title.value,
                       decoration: InputDecoration(
                         labelText: 'Title',
-                        prefixIcon: const Icon(Icons.title),
+                        prefixIcon: const Icon(Icons.bed_sharp),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
@@ -158,12 +155,19 @@ class _PostingPageState extends State<PostingPage> {
                           ),
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a title';
-                        }
-                        return null;
+                      onChanged: (String? newValue) {
+                        controller.title.value = newValue!;
                       },
+                      items: <String>['Choose Type of Property','Single Room','Master Bedroom', 'Master Bedroom and Living Room']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                              value,
+                            style: const TextStyle(fontWeight: FontWeight.normal),
+                          ),
+                        );
+                      }).toList(),
                     );
                   }),
                   const SizedBox(height: 10),
@@ -271,11 +275,14 @@ class _PostingPageState extends State<PostingPage> {
                       onChanged: (String? newValue) {
                         controller.rentPeriod.value = newValue!;
                       },
-                      items: <String>['Per Day', 'Per Week', 'Per Month', 'Per Year']
+                      items: <String>['Choose Rent Period','Per Day', 'Per Week', 'Per Month', 'Per Year']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: const TextStyle(fontWeight: FontWeight.normal),
+                          ),
                         );
                       }).toList(),
                     );
@@ -313,7 +320,10 @@ class _PostingPageState extends State<PostingPage> {
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: const TextStyle(fontWeight: FontWeight.normal),
+                          ),
                         );
                       }).toList(),
                     );

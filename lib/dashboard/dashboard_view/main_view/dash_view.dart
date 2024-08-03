@@ -8,6 +8,8 @@ import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_
 import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/swipe_img_view.dart';
 import 'package:renting_app/dashboard/dashboard_view/dashbord_components/Titles/near_from_you.dart';
 import 'package:renting_app/dashboard/dashboard_view/dashbord_components/Titles/recomended.dart';
+import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
+import 'package:get/get.dart';
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -16,6 +18,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final TextEditingController searchController =  TextEditingController();
+  final CustomSearchController searchBarController = Get.put(CustomSearchController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +28,19 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: CustomAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SearchBarWithFilter(),
-              const ButtonRow(),
-              SwipeImageContainer(),
-              const NearFromYou(), // Add the NearFromYou component
-              HorizontalScrollCards(),
-              const Recommended(), // Add the Recommended component
-              VerticalScrollCards(),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                SearchBarWithFilter(controller: searchController),
+                const ButtonRow(),
+                SwipeImageContainer(),
+                const NearFromYou(), // Add the NearFromYou component
+                HorizontalScrollCards(),
+                const Recommended(), // Add the Recommended component
+                VerticalScrollCards(),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,37 +1,43 @@
 import 'package:get/get.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class FeedController extends GetxController {
-  // Observable list of feed items
   var feedItems = <FeedItem>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchFeedData(); // Fetch data when the controller is initialized
+    fetchFeedData();
   }
 
-  // Fetches feed data
   void fetchFeedData() {
-    // Example data fetching logic
-    // In a real app, this could be from an API or database
-    feedItems.value = List.generate(
-      10,
-          (index) => FeedItem(
-        title: 'Post Title $index',
-        description: 'This is the description for post $index',
-        imageUrl: 'assets/img/house_4.jpg',
-        profileImageUrl: 'assets/img/imgagent.png',
-        location: 'Location $index',
-        datePosted: 'Posted 3 days ago',
-        bathroomCount: 1,
-        bedroomCount: 2,
-        wifi: 'Free',
-      ),
-    );
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child('posts');
+
+    ref.onValue.listen((event) {
+      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+
+      if (data != null) {
+        feedItems.value = data.entries.map((entry) {
+          final post = entry.value as Map<dynamic, dynamic>;
+          return FeedItem(
+            title: post['title'] ?? '',
+            description: post['description'] ?? '',
+            imageUrl: post['images'].isNotEmpty ? post['images'][0] : 'assets/img/default_image.png',
+            profileImageUrl: 'assets/img/imgagent.png', // Assuming a default profile image
+            location: '${post['location']['latitude']}, ${post['location']['longitude']}',
+            datePosted: 'Posted ${DateTime.now().difference(DateTime.parse(post['timestamp'])).inDays} days ago',
+            bathroomCount: post['bathroomCount'] ?? 0,
+            bedroomCount: post['bedroomCount'] ?? 0,
+            wifi: post['wifi'] ?? 'No',
+          );
+        }).toList();
+      } else {
+        feedItems.clear();
+      }
+    });
   }
 }
 
-// FeedItem class to represent each item
 class FeedItem {
   final String title;
   final String description;

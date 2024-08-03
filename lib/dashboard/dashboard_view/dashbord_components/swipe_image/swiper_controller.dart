@@ -18,7 +18,7 @@ class SwiperController extends GetxController {
     );
 
     // Auto-scroll timer
-    Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (pageController.hasClients) {
         currentPage = (currentPage + 1) % itemCount;
         pageController.animateToPage(
