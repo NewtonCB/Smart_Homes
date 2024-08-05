@@ -41,7 +41,10 @@ dependencies:
   get:
   form_validator:  # Form validation
   image_picker: ^0.8.4+4   # For profile picture (optional)
-  google_maps_flutter:   # For Google Maps location picker (optional)
+  google_maps_flutter:
+  google_places_flutter:
+  flutter_spinkit: ^5.2.1
+  http: ^1.2.2
   animated_login: ^1.7.2
   intl_phone_number_input:
   firebase_core:

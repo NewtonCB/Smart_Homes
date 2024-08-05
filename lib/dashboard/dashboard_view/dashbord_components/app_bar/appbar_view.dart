@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:renting_app/registration_login/view/registration_view.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -21,7 +23,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.person),
-          onPressed: () {},
+          onPressed: () {
+            Get.to(RegistrationPage());
+          },
         ),
       ],
     );

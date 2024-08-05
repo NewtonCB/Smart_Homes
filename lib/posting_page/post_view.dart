@@ -452,7 +452,7 @@ class _PostingPageState extends State<PostingPage> {
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:const Color(0xff06113c),
+                        backgroundColor: const Color(0xff06113c),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -483,11 +483,12 @@ class _PostingPageState extends State<PostingPage> {
                           }
                         }
                       },
-
-                      child: const Text('Upload',
+                      child: const Text(
+                        'Upload',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+
                   ),
                 ],
               ),
@@ -527,27 +528,53 @@ class _AmenitiesDialogState extends State<AmenitiesDialog> {
         child: ListBody(
           children: [
             CheckboxListTile(
-              title: const Text('WiFi'),
-              value: tempAmenities.contains('WiFi'),
+              title: const Text('wifi'),
+              value: tempAmenities.contains('wifi'),
               onChanged: (bool? value) {
                 setState(() {
                   if (value == true) {
-                    tempAmenities.add('WiFi');
+                    tempAmenities.add('wifi');
                   } else {
-                    tempAmenities.remove('WiFi');
+                    tempAmenities.remove('wifi');
                   }
                 });
               },
             ),
             CheckboxListTile(
-              title: const Text('Master Bedroom'),
-              value: tempAmenities.contains('Master Bedroom'),
+              title: const Text('bathroom'),
+              value: tempAmenities.contains('bathroom'),
               onChanged: (bool? value) {
                 setState(() {
                   if (value == true) {
-                    tempAmenities.add('Master Bedroom');
+                    tempAmenities.add('bathroom');
                   } else {
-                    tempAmenities.remove('Master Bedroom');
+                    tempAmenities.remove('bathroom');
+                  }
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('fence'),
+              value: tempAmenities.contains('fence'),
+              onChanged: (bool? value) {
+                setState(() {
+                  if (value == true) {
+                    tempAmenities.add('fence');
+                  } else {
+                    tempAmenities.remove('fence');
+                  }
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('ac'),
+              value: tempAmenities.contains('ac'),
+              onChanged: (bool? value) {
+                setState(() {
+                  if (value == true) {
+                    tempAmenities.add('ac');
+                  } else {
+                    tempAmenities.remove('ac');
                   }
                 });
               },

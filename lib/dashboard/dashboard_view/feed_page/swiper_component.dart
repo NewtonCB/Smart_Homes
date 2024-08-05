@@ -37,69 +37,71 @@ class _CustomSwiperState extends State<CustomSwiper> {
       children: [
         Container(
           width: double.infinity,
-          height: 200.0,
-          margin: const EdgeInsets.symmetric(vertical: 16.0),
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: widget.imageUrls.length,
-            onPageChanged: (page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Image.network(
-                  widget.imageUrls[index],
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                              : null,
+          height: double.infinity, // Take up full height
+          child: Stack(
+            children: [
+              PageView.builder(
+                controller: _pageController,
+                itemCount: widget.imageUrls.length,
+                onPageChanged: (page) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Image.network(
+                      widget.imageUrls[index],
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(Icons.error, color: Colors.red),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(widget.imageUrls.length, (index) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: _currentPage == index ? 12.0 : 8.0,
+                        height: 8.0,
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        decoration: BoxDecoration(
+                          color: _currentPage == index ? const Color(0xff06113c) : Colors.white,
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                       );
-                    }
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(Icons.error, color: Colors.red),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(widget.imageUrls.length, (index) {
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: _currentPage == index ? 12.0 : 8.0,
-                  height: 8.0,
-                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                  decoration: BoxDecoration(
-                    color: _currentPage == index ? const Color(0xff06113c) : Colors.grey,
-                    borderRadius: BorderRadius.circular(4.0),
+                    }),
                   ),
-                );
-              }),
-            ),
+                ),
+              ),
+            ],
           ),
         ),
         Positioned(

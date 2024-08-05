@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart'; // Add this import
 import '../dashbord_components/app_bar/appbar_view.dart';
 import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
 import 'swiper_component.dart';
@@ -95,6 +96,15 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
+  Future<void> _navigateToGoogleMaps(double latitude, double longitude) async {
+    final url = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,79 +120,101 @@ class _FeedPageState extends State<FeedPage> {
                 DateTime postDate = DateTime.parse(post['timestamp']);
                 List<String> imageUrls = List<String>.from(post['images'] ?? []);
 
-                return Card(
+                return Container(
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Check if imageUrls is not empty before passing to CustomSwiper
-                        if (imageUrls.isNotEmpty)
-                          CustomSwiper(imageUrls: imageUrls),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                post['title'] ?? '',
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text(
-                              '${post['rentAmount']} Tsh',
-                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          timeAgo(postDate),
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(post['description'] ?? ''),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Icon(Icons.account_circle),
-                            const SizedBox(width: 10),
-                            Text(post['name'] ?? ''),
-                            const SizedBox(width: 20),
-                            const Icon(Icons.phone),
-                            const SizedBox(width: 10),
-                            Text(post['phoneNumber'] ?? ''),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.info),
-                              onPressed: () {
-                                // Navigate to details page
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.location_on),
-                              onPressed: () {
-                                // Navigate to location using lat/lng
-                                double lat = post['location']['latitude'];
-                                double lng = post['location']['longitude'];
-                                // Use your preferred method to navigate to Google Maps
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Colors.grey[200]!],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 5,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        child: Container(
+                          height: 200, // Fixed height for the swiper
+                          child: imageUrls.isNotEmpty
+                              ? CustomSwiper(imageUrls: imageUrls)
+                              : Container(
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: Text('No Image Available'),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              post['title'] ?? '',
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              timeAgo(postDate),
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(post['description'] ?? ''),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Icon(Icons.account_circle),
+                                const SizedBox(width: 10),
+                                Text(post['name'] ?? ''),
+                                const SizedBox(width: 20),
+                                const Icon(Icons.phone),
+                                const SizedBox(width: 10),
+                                Text(post['phoneNumber'] ?? ''),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.info),
+                                  onPressed: () {
+                                    // Navigate to details page
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.location_on),
+                                  onPressed: () {
+                                    // Navigate to location using lat/lng
+                                    double lat = post['location']['latitude'];
+                                    double lng = post['location']['longitude'];
+                                    _navigateToGoogleMaps(lat, lng); // Call the method to open Google Maps
+                                  },
+                                ),
+                                const Spacer(),
+                                Text(
+                                  '${post['rentAmount']} Tsh/Month',
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },

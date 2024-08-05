@@ -22,7 +22,7 @@ class ButtonGroup__widget extends StatelessWidget {
               leftIconVisibility: false,
               rightIconVisibility: false,
               onTap: () {
-                Get.to(const LandLordsPage()); // Navigate to the SecondScreen when the button is tapped
+                Get.to(const LandlordsPage()); // Navigate to the SecondScreen when the button is tapped
               },
             ),
           ),

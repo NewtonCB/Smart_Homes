@@ -1,22 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:renting_app/landlords_agents/landlords/landlords_model.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'landlords_model.dart';
 
-class LandLordsPage extends StatefulWidget {
-  const LandLordsPage({super.key});
+class LandlordsPage extends StatefulWidget {
+  const LandlordsPage({super.key});
 
   @override
-  _LandLordsPageState createState() => _LandLordsPageState();
+  _LandlordsPageState createState() => _LandlordsPageState();
 }
 
-class _LandLordsPageState extends State<LandLordsPage> {
+class _LandlordsPageState extends State<LandlordsPage> {
   TextEditingController searchController = TextEditingController();
-  List<User> filteredUsers = users;
+  List<User_Agent> filteredUsers = [];
+  List<User_Agent> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAgents();
+  }
+
+  Future<void> fetchAgents() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child('users');
+    DatabaseEvent event = await ref.once();
+    Map<dynamic, dynamic> usersMap = event.snapshot.value as Map<dynamic, dynamic>;
+
+    List<User_Agent> allUsers = [];
+    usersMap.forEach((key, value) {
+      User_Agent user = User_Agent.fromJson(value);
+      if (value['role'] == 'Landlord') {
+        allUsers.add(user);
+      }
+    });
+
+    setState(() {
+      users = allUsers;
+      filteredUsers = allUsers;
+    });
+  }
 
   void filterUsers(String query) {
     final filtered = users.where((user) {
-      return user.locationName.toLowerCase().contains(query.toLowerCase());
+      return user.street.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     setState(() {
@@ -29,7 +56,7 @@ class _LandLordsPageState extends State<LandLordsPage> {
     return Scaffold(
       backgroundColor: const Color(0xffF7EBE1),
       appBar: AppBar(
-        title: const Text('LandLords'),
+        title: const Text('Agents'),
       ),
       body: Column(
         children: [
@@ -67,7 +94,7 @@ class _LandLordsPageState extends State<LandLordsPage> {
 }
 
 class UserListItem extends StatelessWidget {
-  final User user;
+  final User_Agent user;
 
   const UserListItem({super.key, required this.user});
 
@@ -77,13 +104,6 @@ class UserListItem extends StatelessWidget {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
-  }
-
-  void _navigateToChat(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ChatScreen(user: user)),
-    );
   }
 
   @override
@@ -107,7 +127,7 @@ class UserListItem extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(user.assetImagePath),
+                backgroundImage: NetworkImage(user.profilePicture),
                 radius: 30,
               ),
               const SizedBox(width: 16),
@@ -116,7 +136,7 @@ class UserListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.name,
+                      '${user.firstName} ${user.lastName}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -124,7 +144,7 @@ class UserListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     RatingBarIndicator(
-                      rating: user.rating,
+                      rating: 0, // Default rating for now
                       itemBuilder: (context, index) => const Icon(
                         Icons.star,
                         color: Colors.amber,
@@ -137,41 +157,28 @@ class UserListItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(width: 4),
                             Text(
-                              user.locationName,
+                              user.street,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Icon(
-                              Icons.location_on,
-                              color: Colors.red,
-                            ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.call),
-                              onPressed: () {
-                                _makePhoneCall(user.phoneNumber);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.message,
-                                color: Color(0xff06113c),
-                              ),
-                              onPressed: () {
-                                _navigateToChat(context);
-                              },
-                            ),
-                          ],
+                        IconButton(
+                          icon: const Icon(Icons.call),
+                          onPressed: () {
+                            _makePhoneCall(user.phoneNumber);
+                          },
                         ),
                       ],
                     ),
@@ -181,56 +188,6 @@ class UserListItem extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
-  final User user;
-
-  const ChatScreen({super.key, required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat with ${user.name}'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              // Display chat messages here
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Type a message',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    // Send message action
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

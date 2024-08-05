@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:renting_app/posting_page/post_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -65,6 +66,20 @@ class PostingPageController extends GetxController {
   }
 
   Future<void> uploadPost(BuildContext context) async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: const Color(0xff06113c),
+            size: 50,
+          ),
+        );
+      },
+    );
+
     // Get image URLs after uploading
     List<String> imageUrls = await uploadImages(selectedImages);
 
@@ -87,6 +102,10 @@ class PostingPageController extends GetxController {
     try {
       await FirebaseDatabase.instance.ref().child('posts').push().set(newPost.toJson());
 
+      // Close loading dialog
+      Navigator.of(context).pop();
+
+      // Show success dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -123,7 +142,10 @@ class PostingPageController extends GetxController {
         },
       );
     } catch (error) {
+      // Close loading dialog
+      Navigator.of(context).pop();
       print('Failed to upload post: $error');
     }
   }
+
 }

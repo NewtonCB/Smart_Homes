@@ -1,8 +1,9 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:renting_app/landlords_agents/landlords/landlords_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+import 'agents_model.dart';
 
 class AgentsPage extends StatefulWidget {
   const AgentsPage({super.key});
@@ -13,11 +14,37 @@ class AgentsPage extends StatefulWidget {
 
 class _AgentsPageState extends State<AgentsPage> {
   TextEditingController searchController = TextEditingController();
-  List<User> filteredUsers = users;
+  List<User_Agent> filteredUsers = [];
+  List<User_Agent> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAgents();
+  }
+
+  Future<void> fetchAgents() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child('users');
+    DatabaseEvent event = await ref.once();
+    Map<dynamic, dynamic> usersMap = event.snapshot.value as Map<dynamic, dynamic>;
+
+    List<User_Agent> allUsers = [];
+    usersMap.forEach((key, value) {
+      User_Agent user = User_Agent.fromJson(value);
+      if (value['role'] == 'Agent') {
+        allUsers.add(user);
+      }
+    });
+
+    setState(() {
+      users = allUsers;
+      filteredUsers = allUsers;
+    });
+  }
 
   void filterUsers(String query) {
     final filtered = users.where((user) {
-      return user.locationName.toLowerCase().contains(query.toLowerCase());
+      return user.street.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     setState(() {
@@ -68,16 +95,28 @@ class _AgentsPageState extends State<AgentsPage> {
 }
 
 class UserListItem extends StatelessWidget {
-  final User user;
+  final User_Agent user;
 
-  UserListItem({required this.user});
+  const UserListItem({super.key, required this.user});
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Container(
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
           gradient: LinearGradient(
             colors: [Colors.white60, Colors.grey],
             begin: Alignment.topLeft,
@@ -89,7 +128,7 @@ class UserListItem extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(user.assetImagePath),
+                backgroundImage: NetworkImage(user.profilePicture),
                 radius: 30,
               ),
               const SizedBox(width: 16),
@@ -98,51 +137,49 @@ class UserListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.name,
+                      '${user.firstName} ${user.lastName}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
+                    RatingBarIndicator(
+                      rating: 0, // Default rating for now
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 20.0,
+                      direction: Axis.horizontal,
+                    ),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(width: 4),
                             Text(
-                              user.locationName,
+                              user.street,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Icon(
-                              Icons.location_on,
-                              color: Colors.red,
-                            ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.call),
-                              onPressed: () {
-                                // Add your call action here
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.message,
-                                color: Color(0xff06113c),
-                              ),
-                              onPressed: () {
-                                // Add your message action here
-                              },
-                            ),
-                          ],
+                        IconButton(
+                          icon: const Icon(Icons.call),
+                          onPressed: () {
+                            _makePhoneCall(user.phoneNumber);
+                          },
                         ),
                       ],
                     ),

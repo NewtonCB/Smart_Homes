@@ -141,40 +141,17 @@ class RegistrationPage extends StatelessWidget {
                     );
                   }),
                   const SizedBox(height: 10),
-                  Obx(() {
-                    return GestureDetector(
-                      onTap: () => _showStreetDialog(context),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              controller.selectedStreets.isEmpty
-                                  ? 'Select Streets'
-                                  : controller.selectedStreets.join(', '),
-                              style: TextStyle(color: Colors.grey.shade700),
-                            ),
-                            Icon(Icons.arrow_drop_down, color: Colors.grey.shade700),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                  Obx(() {
-                    return Wrap(
-                      children: controller.selectedStreets
-                          .map((street) => Chip(
-                        label: Text(street),
-                        onDeleted: () => controller.removeStreet(street),
-                      ))
-                          .toList(),
-                    );
-                  }),
+                  CustomTextFormField(
+                    hintText: 'Street',
+                    icon: Icons.location_on,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your street';
+                      }
+                      return null;
+                    },
+                    controller: controller.streetController,
+                  ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
                     hintText: 'Password',
@@ -257,72 +234,4 @@ class RegistrationPage extends StatelessWidget {
       },
     );
   }
-
-  void _showStreetDialog(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
-    // Use RxList directly without wrapping in another Rx
-    RxList<String> filteredStreets = controller.streets;
-
-    void filterSearchResults(String query) {
-      if (query.isEmpty) {
-        filteredStreets.value = controller.streets;
-      } else {
-        filteredStreets.value = controller.streets
-            .where((street) => street.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      }
-    }
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Expanded(
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Container(
-              constraints: const BoxConstraints(maxHeight: 300), // Limiting the height of the dialog
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Select Streets',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: searchController,
-                    decoration: const InputDecoration(hintText: 'Search Streets'),
-                    onChanged: (value) {
-                      filterSearchResults(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: Obx(() {
-                      return ListView.builder(
-                        itemCount: filteredStreets.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(filteredStreets[index]),
-                            onTap: () {
-                              controller.addStreet(filteredStreets[index]);
-                              Get.back();
-                            },
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
 }

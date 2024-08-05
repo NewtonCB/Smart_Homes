@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:renting_app/landlords_agents/landlords/landlords_view.dart';
+import 'package:renting_app/landlords_agents/agents/agents_view.dart';
 class ButtonRow extends StatelessWidget {
   const ButtonRow({super.key});
 
@@ -12,7 +14,9 @@ class ButtonRow extends StatelessWidget {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(const AgentsPage());
+              },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor:const Color(0xff06113c),
                 shape: RoundedRectangleBorder(
@@ -30,7 +34,9 @@ class ButtonRow extends StatelessWidget {
           const SizedBox(width: 8.0), // Space between buttons
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(const LandlordsPage());
+              },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: const Color(0xff06113c),
                 shape: RoundedRectangleBorder(
