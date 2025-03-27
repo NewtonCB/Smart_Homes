@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import '../../details_page/details_view.dart';
 
 class VerticalScrollCards extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class VerticalScrollCards extends StatefulWidget {
 class _VerticalScrollCardsState extends State<VerticalScrollCards> {
   final DatabaseReference postsRef = FirebaseDatabase.instance.ref().child('posts');
   List<Map<String, dynamic>> postsList = [];
+  List<Map<String, dynamic>> filteredPostsList = [];
 
   @override
   void initState() {
@@ -17,7 +19,7 @@ class _VerticalScrollCardsState extends State<VerticalScrollCards> {
     fetchPosts();
   }
 
-  Future<void> fetchPosts() async {
+  void fetchPosts() {
     postsRef.onValue.listen((DatabaseEvent event) {
       if (event.snapshot.value != null) {
         Map<dynamic, dynamic> posts = event.snapshot.value as Map<dynamic, dynamic>;
@@ -30,14 +32,9 @@ class _VerticalScrollCardsState extends State<VerticalScrollCards> {
           // Ensure images are correctly parsed
           post['images'] = post['images'] != null ? List<String>.from(post['images']) : <String>[];
 
-          // Ensure rentAmount is parsed as a string
-          post['rentAmount'] = post['rentAmount']?.toString() ?? 'No Rent Amount';
-
-          // Parse timestamp as an integer
+          // Parse timestamp
           if (post['timestamp'] != null && post['timestamp'] is String) {
-            post['timestamp'] = int.tryParse(post['timestamp']) ?? 0;
-          } else if (post['timestamp'] == null) {
-            post['timestamp'] = 0;
+            post['timestamp'] = DateTime.parse(post['timestamp']);
           }
 
           fetchedPostsList.add(post);
@@ -45,41 +42,78 @@ class _VerticalScrollCardsState extends State<VerticalScrollCards> {
 
         setState(() {
           postsList = fetchedPostsList;
+          filteredPostsList = _filterPosts(fetchedPostsList);
         });
       } else {
         setState(() {
           postsList = [];
+          filteredPostsList = [];
         });
       }
     });
   }
 
-  String formatTimePosted(int timestamp) {
-    if (timestamp == 0) return 'Unknown Time';
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    return DateFormat('dd MMM yyyy, hh:mm a').format(date);
+  List<Map<String, dynamic>> _filterPosts(List<Map<String, dynamic>> posts) {
+    DateTime now = DateTime.now();
+    return posts.where((post) {
+      DateTime postDate = post['timestamp'];
+      return now.difference(postDate).inDays < 1; // Show posts from the last 24 hours
+    }).toList();
+  }
+
+  String formatTimePosted(DateTime postDate) {
+    Duration diff = DateTime.now().difference(postDate);
+    if (diff.inDays > 0) {
+      return '${diff.inDays} days ago';
+    } else if (diff.inHours > 0) {
+      return '${diff.inHours} hours ago';
+    } else if (diff.inMinutes > 0) {
+      return '${diff.inMinutes} minutes ago';
+    } else if (diff.inSeconds > 0) {
+      return '${diff.inSeconds} seconds ago';
+    } else {
+      return 'Just now';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return filteredPostsList.isEmpty
+        ? Center(
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.red[100],
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.red, width: 1.5),
+        ),
+        child: const Text(
+          'Oops! Nothing has posted today.',
+          style: TextStyle(color: Colors.red, fontSize: 16.0),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    )
+        : ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: postsList.length,
+      itemCount: filteredPostsList.length,
       itemBuilder: (context, index) {
-        Map<String, dynamic> post = postsList[index];
+        Map<String, dynamic> post = filteredPostsList[index];
         String coverImage = post['images'].isNotEmpty ? post['images'][0] : 'assets/images/house1.jpg';
         String title = post['title'] ?? 'No Title';
-        String timePosted = formatTimePosted(post['timestamp']);
-        bool hasWifi = post['amenities'].contains('wifi');
-        bool hasBathroom = post['amenities'].contains('bathroom');
-        bool hasFence = post['amenities'].contains('fence');
-        bool hasAC = post['amenities'].contains('ac');
+        DateTime postDate = post['timestamp'];
+        String timePosted = formatTimePosted(postDate);
+        bool hasWifi = post['amenities']?.contains('wifi') ?? false;
+        bool hasBathroom = post['amenities']?.contains('bathroom') ?? false;
+        bool hasFence = post['amenities']?.contains('fence') ?? false;
+        bool hasAC = post['amenities']?.contains('ac') ?? false;
         String rentAmount = post['rentAmount'] ?? 'No Rent Amount';
 
         return GestureDetector(
           onTap: () {
-            // Handle card tap, navigate to details page in future
+            // Navigate to details page
+            Get.to(() => DetailsPage(post: post));
           },
           child: Card(
             margin: const EdgeInsets.all(8.0),

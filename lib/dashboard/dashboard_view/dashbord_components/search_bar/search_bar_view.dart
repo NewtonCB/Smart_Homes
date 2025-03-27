@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:renting_app/dashboard/dashboard_view/feed_page/feed_page_view.dart';
 import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
 
+import 'filter_dialogue.dart';
+
 class SearchBarWithFilter extends StatelessWidget {
   final TextEditingController controller;
 
@@ -40,7 +42,12 @@ class SearchBarWithFilter extends StatelessWidget {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.search_rounded, color: Color(0xff06113c)),
+                  suffixIcon: const Icon(
+                      Icons.search_rounded,
+                      color: Color(0xff06113c),
+
+
+                  ),
                   hintText: 'Search address, or near you',
                   hintStyle: const TextStyle(
                     fontSize: 14,
@@ -67,17 +74,35 @@ class SearchBarWithFilter extends StatelessWidget {
                 },
                 onSubmitted: (value) {
                   searchController.updateSearchQuery(value);
-                  Get.to(() => FeedPage()); // Navigate to FeedPage on search submit
+                  Get.to(() => FeedPage(
+                    searchQuery: controller.text,
+                    priceRange: '',
+                    district: '',
+                    propertyType: '',)); // Navigate to FeedPage on search submit
                 },
               ),
             ),
           ),
           const SizedBox(width: 8.0),
           IconButton(
-            icon: const Icon(Icons.equalizer),
-            color: const Color(0xff06113c),
-            iconSize: 28.0,
-            onPressed: () {},
+            icon: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xff06113c),
+                borderRadius: BorderRadius.circular(8.0), // Rounded corners
+              ),
+              child: const Icon(
+                Icons.tune,
+                color: Colors.white,
+                size: 20.0,
+              ),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => FilterDialog(),
+              );
+            },
           ),
         ],
       ),

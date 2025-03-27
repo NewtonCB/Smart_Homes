@@ -4,7 +4,6 @@ import 'package:renting_app/splash_screens/components/second_splash.dart';
 import 'package:renting_app/splash_screens/components/first_splash.dart';
 import 'package:renting_app/splash_screens/components/top_skip_back.dart';
 import 'package:renting_app/splash_screens/components/fourth_splash.dart';
-import 'package:renting_app/dashboard/presentation/pages/home/view/home.dart';
 import 'package:renting_app/dashboard/dashboard_view/main_view/dash_view.dart';
 // import 'package:renting_app/screens/feed_screen.dart';
 import 'package:flutter/material.dart';

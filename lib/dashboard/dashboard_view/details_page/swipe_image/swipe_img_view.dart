@@ -1,13 +1,21 @@
+// lib/dashboard/dashboard_view/details_page/swipe_image/swipe_img_view.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
+import 'package:renting_app/controllers/swiper_controller.dart';
+import 'swiper_controller.dart';
 
-class SwipeImageContainer extends StatelessWidget {
+class SwiperImageContainer extends StatelessWidget {
+  final List<String> imageUrls;
+
+  const SwiperImageContainer({Key? key, required this.imageUrls}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final SwiperController controller = Get.find<SwiperController>();
+    final SwipeController controller = Get.put(SwipeController());
+    controller.setImages(imageUrls); // Set the image URLs in the controller
 
-    return GetBuilder<SwiperController>(
+    return GetBuilder<SwipeController>(
       builder: (_) {
         return Stack(
           children: [
@@ -19,7 +27,7 @@ class SwipeImageContainer extends StatelessWidget {
                 children: [
                   PageView.builder(
                     controller: controller.pageController,
-                    itemCount: controller.images.length, // Use the actual count
+                    itemCount: controller.imageUrls.length, // Use the actual count
                     onPageChanged: (page) {
                       controller.currentPage = page;
                       controller.update();
@@ -29,7 +37,7 @@ class SwipeImageContainer extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(controller.images[index].imagePath),
+                            image: NetworkImage(controller.imageUrls[index]), // Use NetworkImage
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(8.0),
@@ -46,7 +54,7 @@ class SwipeImageContainer extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                          (controller.images.length / controller.itemsToSlide).ceil(),
+                          (controller.imageUrls.length / controller.itemsToSlide).ceil(),
                               (index) {
                             return AnimatedContainer(
                               duration: const Duration(milliseconds: 300),

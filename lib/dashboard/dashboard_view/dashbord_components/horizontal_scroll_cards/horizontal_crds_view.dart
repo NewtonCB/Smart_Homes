@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:math';
+import 'package:get/get.dart';
+
+import '../../details_page/details_view.dart';
 
 class HorizontalScrollCards extends StatefulWidget {
   const HorizontalScrollCards({super.key});
@@ -116,7 +119,8 @@ class _HorizontalScrollCardsState extends State<HorizontalScrollCards> {
 
           return GestureDetector(
             onTap: () {
-              // Handle card tap, navigate to details page
+              // Navigate to details page
+              Get.to(() => DetailsPage(post: post));
             },
             child: Container(
               width: 160.0,

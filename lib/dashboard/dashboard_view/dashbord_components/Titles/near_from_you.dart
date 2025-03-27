@@ -24,7 +24,7 @@ class NearFromYou extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Get.to(() =>  FeedPage(), binding: BindingsBuilder(() {
+              Get.to(() =>  FeedPage(priceRange: '', district: '', propertyType: '',), binding: BindingsBuilder(() {
 
               }));
             },

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../components/text_form_field.dart';
-import '../controler/login_controller.dart';  // Import your custom text form field
+import 'login_controller.dart';
 
-class LoginPage extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LoginController controller = Get.put(LoginController());
+class VerificationPage extends StatelessWidget {
+  final String verificationId;
+  final LoginController controller = Get.find<LoginController>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Define the form key
+
+  VerificationPage({required this.verificationId});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xffF7EBE1),
         title: const Text(
-          'Login',
+          'Verify OTP',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -26,11 +29,11 @@ class LoginPage extends StatelessWidget {
             fit: BoxFit.fitWidth,
           ),
         ),
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SingleChildScrollView(
+            child: Form(  // Wrap in a Form widget
+              key: _formKey, // Assign the form key
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -41,7 +44,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 80.0),
                   const Text(
-                    'Please login to access more features',
+                    'Enter the OTP sent to your phone number',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -50,36 +53,23 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   CustomTextFormField(
-                    hintText: 'Phone Number',
-                    icon: Icons.phone,
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      return null;
-                    },
-                    controller: controller.phoneNumberController,
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextFormField(
-                    hintText: 'Password',
+                    hintText: 'OTP',
                     icon: Icons.lock,
-                    obscureText: true,
+                    keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter the OTP';
                       }
                       return null;
                     },
-                    controller: controller.passwordController,
+                    controller: controller.otpController,
                   ),
                   const SizedBox(height: 20),
                   Obx(() {
                     return ElevatedButton(
                       onPressed: controller.isLoading.value ? null : () {
                         if (_formKey.currentState!.validate()) {
-                          controller.loginUser();
+                          controller.verifyOtp(verificationId);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -88,16 +78,16 @@ class LoginPage extends StatelessWidget {
                       child: controller.isLoading.value
                           ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
-                        'Login',
+                        'Verify OTP',
                         style: TextStyle(color: Colors.white),
                       ),
                     );
                   }),
                   const SizedBox(height: 20),
                   TextButton(
-                    onPressed: () => Get.toNamed('/registration'),
+                    onPressed: () => Get.back(),
                     child: const Text(
-                      'Don\'t have an account? Register',
+                      'Back to Login',
                       style: TextStyle(color: Colors.black54),
                     ),
                   ),

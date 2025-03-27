@@ -197,7 +197,7 @@ class RegistrationPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextButton(
-                    onPressed: () => Get.toNamed('/login'),
+                    onPressed: () => Get.toNamed(''),
                     child: const Text(
                       'Already have an account? Login',
                       style: TextStyle(color: Colors.black54),

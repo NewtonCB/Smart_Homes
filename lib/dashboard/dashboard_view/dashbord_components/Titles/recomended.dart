@@ -16,7 +16,7 @@ class Recommended extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text(
-            'Recommended',
+            'Recently posted 🕑 !',
             style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
@@ -25,7 +25,7 @@ class Recommended extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Get.to(() =>  FeedPage(), binding: BindingsBuilder(() {
+              Get.to(() =>  FeedPage(priceRange: '', district: '', propertyType: '',), binding: BindingsBuilder(() {
               }));
             },
             child: const Text(

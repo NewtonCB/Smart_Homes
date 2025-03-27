@@ -26,7 +26,7 @@ class ButtonRow extends StatelessWidget {
                 elevation: 5.0, // Text color
               ),
               child: const Text(
-                  'Agents',
+                  'View Agents',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -45,7 +45,7 @@ class ButtonRow extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 35), // Expand button to fill row space
                 elevation: 5.0, // Text color
               ),
-              child: const Text('Landlords'),
+              child: const Text('View Landlords'),
             ),
           ),
         ],

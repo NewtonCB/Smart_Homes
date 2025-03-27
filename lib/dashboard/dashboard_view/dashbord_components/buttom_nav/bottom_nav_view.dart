@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:renting_app/dashboard/presentation/themes/config.dart';
 import 'package:get/get.dart';
 import 'package:renting_app/posting_page/post_view.dart';
-import 'package:renting_app/dashboard/presentation/pages/home/view/home.dart';
+
 
 class FloatingActionButtonWithBottomNav extends StatefulWidget {
   const FloatingActionButtonWithBottomNav({Key? key}) : super(key: key);
@@ -28,7 +27,7 @@ class _FloatingActionButtonWithBottomNavState
                 _showBottomNav = true;
               });
             },
-            child: const Icon(Icons.menu, color: kButtonSecondaryColor),
+            child: const Icon(Icons.menu, color: Colors.white),
           ),
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
@@ -80,7 +79,15 @@ class _FloatingActionButtonWithBottomNavState
                     break;
                   case 1:
                   // Navigate to Settings Page
+                    Get.toNamed('/feed');
+                    break;
+                  case 2:
+                  // Navigate to Settings Page
                     Get.toNamed('/add_photo');
+                    break;
+                  case 3:
+                  // Navigate to Settings Page
+                    Get.toNamed('/register');
                     break;
                   default:
                   // Default case if needed

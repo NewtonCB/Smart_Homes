@@ -119,7 +119,7 @@ class RegistrationController extends GetxController {
               onPressed: () {
                 clearForm();
                 Get.back(); // Close the dialog
-                Get.offNamed('/login'); // Navigate to login page
+                Get.offNamed(''); // Navigate to login page
               },
               child: const Text('OK'),
             ),

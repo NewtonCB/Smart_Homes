@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:renting_app/posting_page/post_controller.dart';
-import 'package:renting_app/dashboard/presentation/pages/home/widgets/bottom_nav.dart';
+
+import '../dashboard/dashboard_view/dashbord_components/buttom_nav/bottom_nav_view.dart';
+
 
 class PostingPage extends StatefulWidget {
   @override
@@ -121,9 +123,9 @@ class _PostingPageState extends State<PostingPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a phone number';
                         }
-                        final RegExp phoneRegex = RegExp(r'^\+255\d{9}$');
+                        final RegExp phoneRegex = RegExp(r'^\+255|0\d{9}$');
                         if (!phoneRegex.hasMatch(value)) {
-                          return 'Please enter a valid phone number (+255XXXXXXXXX)';
+                          return 'Please enter a valid phone number (eg: +255712813745)';
                         }
                         return null;
                       },

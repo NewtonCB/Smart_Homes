@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart'; // Add this import
+import 'package:url_launcher/url_launcher.dart';
 import '../dashbord_components/app_bar/appbar_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
+import '../dashbord_components/search_bar/search_bar_controller.dart';
 import 'swiper_component.dart';
+import 'package:renting_app/dashboard/dashboard_view/details_page/details_view.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key});
+  final String searchQuery;
+  final String priceRange;
+  final String district;
+  final String propertyType;
+
+  const FeedPage({
+    Key? key,
+    this.searchQuery = '',
+    this.priceRange = '',
+    this.district = '',
+    this.propertyType = '',
+  }) : super(key: key);
 
   @override
   _FeedPageState createState() => _FeedPageState();
@@ -38,39 +50,60 @@ class _FeedPageState extends State<FeedPage> {
           Map<String, dynamic> post = Map<String, dynamic>.from(entry.value);
           post['key'] = entry.key;
 
-          // Debugging: Log fetched data
-          print('Fetched post data: $post');
-
-          // Ensure images are correctly parsed
+          // Ensure images is always a List<String>
           if (post['images'] != null) {
             post['images'] = (post['images'] as List<dynamic>).map((e) => e.toString()).toList();
           } else {
-            post['images'] = <String>[]; // Set to empty list if null
+            post['images'] = <String>[];
           }
 
-          // Check URL accessibility and format
-          post['images'].forEach((url) {
-            // Log each URL for debugging
-            print('Image URL: $url');
-          });
-
-          fetchedPostsList.add(post);
+          // Apply filters immediately
+          if (_applyFilters(post)) {
+            fetchedPostsList.add(post);
+          }
         }
 
         setState(() {
           postsList = fetchedPostsList;
           filteredPostsList = postsList;
-          _filterPosts(searchController.searchQuery.value);
+          _filterPosts(widget.searchQuery);
         });
       } else {
-        // Handle case where no posts exist
-        print('No posts available');
         setState(() {
           postsList = [];
           filteredPostsList = [];
         });
       }
     });
+  }
+
+  bool _applyFilters(Map<String, dynamic> post) {
+    bool match = true;
+
+    // Apply district filter
+    if (widget.district.isNotEmpty && post['district'] != widget.district) {
+      match = false;
+    }
+
+    // Apply property type filter
+    if (widget.propertyType.isNotEmpty && post['propertyType'] != widget.propertyType) {
+      match = false;
+    }
+
+    // Apply price range filter (assuming price is stored as a numeric value)
+    if (widget.priceRange.isNotEmpty) {
+      String priceRange = widget.priceRange;
+      List<String> range = priceRange.split(' - ');
+      double lowerBound = double.parse(range[0].replaceAll(',', ''));
+      double upperBound = double.parse(range[1].replaceAll(',', ''));
+
+      double postPrice = double.tryParse(post['price']?.toString() ?? '') ?? 0;
+      if (postPrice < lowerBound || postPrice > upperBound) {
+        match = false;
+      }
+    }
+
+    return match;
   }
 
   void _filterPosts(String query) {
@@ -146,7 +179,7 @@ class _FeedPageState extends State<FeedPage> {
                           topRight: Radius.circular(10),
                         ),
                         child: Container(
-                          height: 200, // Fixed height for the swiper
+                          height: 200,
                           child: imageUrls.isNotEmpty
                               ? CustomSwiper(imageUrls: imageUrls)
                               : Container(
@@ -193,15 +226,15 @@ class _FeedPageState extends State<FeedPage> {
                                   icon: const Icon(Icons.info),
                                   onPressed: () {
                                     // Navigate to details page
+                                    Get.to(() => DetailsPage(post: post));
                                   },
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.location_on),
                                   onPressed: () {
-                                    // Navigate to location using lat/lng
                                     double lat = post['location']['latitude'];
                                     double lng = post['location']['longitude'];
-                                    _navigateToGoogleMaps(lat, lng); // Call the method to open Google Maps
+                                    _navigateToGoogleMaps(lat, lng);
                                   },
                                 ),
                                 const Spacer(),
