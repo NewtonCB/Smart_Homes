@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/dashboard/dashboard_view/feed_page/feed_controller.dart';
-import 'package:renting_app/dashboard/dashboard_view/feed_page/feed_page_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/feed_page/feed_controller.dart';
+import 'package:Nestify/dashboard/dashboard_view/feed_page/feed_page_view.dart';
 
 class NearFromYou extends StatelessWidget {
   const NearFromYou({super.key});

@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../dashbord_components/app_bar/appbar_view.dart';
 import '../dashbord_components/search_bar/search_bar_controller.dart';
 import 'swiper_component.dart';
-import 'package:renting_app/dashboard/dashboard_view/details_page/details_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/details_page/details_view.dart';
 
 class FeedPage extends StatefulWidget {
   final String searchQuery;

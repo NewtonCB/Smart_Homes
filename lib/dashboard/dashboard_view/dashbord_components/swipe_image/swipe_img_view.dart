@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
 
 class SwipeImageContainer extends StatelessWidget {
   @override
@@ -13,8 +14,17 @@ class SwipeImageContainer extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 200.0,
+              height: 150.0.h,
               margin: const EdgeInsets.symmetric(vertical: 16.0),
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 5,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
               child: Stack(
                 children: [
                   PageView.builder(

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../components/text_form_field.dart';
-import 'package:renting_app/registration_login/controler/registration_controller.dart';
+import 'package:Nestify/registration_login/controler/registration_controller.dart';
 
 class RegistrationPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

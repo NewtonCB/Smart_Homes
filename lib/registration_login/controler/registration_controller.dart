@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:renting_app/registration_login/model/registration_model.dart';
+import 'package:Nestify/registration_login/model/registration_model.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RegistrationController extends GetxController {

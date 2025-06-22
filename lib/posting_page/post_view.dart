@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:renting_app/posting_page/post_controller.dart';
+import 'package:Nestify/posting_page/post_controller.dart';
 
 import '../dashboard/dashboard_view/dashbord_components/buttom_nav/bottom_nav_view.dart';
 
@@ -498,7 +498,7 @@ class _PostingPageState extends State<PostingPage> {
           ),
         ),
       ),
-      floatingActionButton: const FloatingActionButtonWithBottomNav(),
+      bottomNavigationBar: BottomNavView(),
     );
 
   }

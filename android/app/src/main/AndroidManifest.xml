@@ -14,7 +14,7 @@
 
     <application
 
-        android:label="renting_app"
+        android:label="Nestify"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

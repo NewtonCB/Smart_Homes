@@ -34,20 +34,20 @@ class _FirstSplashState extends State<FirstSplash> {
               ),
               Center(
                 child: SizedBox(
-                  height: 120, // Adjust the height as needed
+                  height: 160, // Adjust the height as needed
                   child: Container(
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.4), // Shadow color
                           spreadRadius: 5, // Spread radius
-                          blurRadius: 7, // Blur radius
-                          offset: const Offset(1, 3), // Shadow position
+                          blurRadius: 24, // Blur radius
+                          // offset: const Offset(1, 3), // Shadow position
                         ),
                       ],
                     ),
                     child: Image.asset(
-                      'assets/img/mylogo.png',
+                      'assets/logos/splash.png',
                       fit: BoxFit.cover,
                     ),
                   ),

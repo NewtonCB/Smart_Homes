@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/registration_login/view/registration_view.dart';
+import 'package:Nestify/registration_login/view/registration_view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(
-        'smartRENTAL',
-        style: TextStyle(
-          shadows: [
-            Shadow(
-              blurRadius: 3.0,
-              color: Colors.grey,
-              offset: Offset(2.0, 2.0),
-            ),
-          ],
-          fontWeight: FontWeight.bold,
-          color: Color(0xff06113c),
-        ),
-      ),
+      // backgroundColor:  Colors.grey,
+      title: Container(
+        // margin: EdgeInsets.only(left: 10),
+          child: Image.asset(
+            'assets/logos/app_bar.png',
+            width: 110.w,
+            height: 120.h
+          )
+      ),  // Add your logo
+      // leadingWidth: 0.01,
       actions: [
         IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {
-            Get.to(RegistrationPage());
-          },
+          icon: const Icon(
+              Icons.notifications,
+            color: Color(0xff06113c),
+          ),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(
+              Icons.settings,
+            color: Color(0xff06113c),
+          ),
+          onPressed: () {},
         ),
       ],
+      // backgroundColor: Colors.white,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
+

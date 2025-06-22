@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:renting_app/dashboard/dashboard_view/details_page/swipe_image/swipe_img_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/details_page/swipe_image/swipe_img_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 

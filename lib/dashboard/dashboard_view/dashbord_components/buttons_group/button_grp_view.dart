@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/landlords_agents/landlords/landlords_view.dart';
-import 'package:renting_app/landlords_agents/agents/agents_view.dart';
+import 'package:Nestify/landlords_agents/landlords/landlords_view.dart';
+import 'package:Nestify/landlords_agents/agents/agents_view.dart';
+
 class ButtonRow extends StatelessWidget {
   const ButtonRow({super.key});
 
@@ -18,34 +19,61 @@ class ButtonRow extends StatelessWidget {
                 Get.to(const AgentsPage());
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor:const Color(0xff06113c),
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xff06113c),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // Reduced border radius
+                  borderRadius:
+                      BorderRadius.circular(8.0), // Reduced border radius
                 ),
-                minimumSize: const Size(double.infinity, 35), // Expand button to fill row space
+                minimumSize: const Size(double.infinity, 35),
+                // Expand button to fill row space
                 elevation: 5.0, // Text color
               ),
-              child: const Text(
-                  'View Agents',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              child: const Center(
+                child: Row(
+                  children: [
+                    SizedBox(width: 18),
+                    Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 10),
+                    Text('View Agents'),
+                  ],
+                ),
               ),
             ),
           ),
           const SizedBox(width: 8.0), // Space between buttons
           Expanded(
             child: ElevatedButton(
-              onPressed: () {
-                Get.to(const LandlordsPage());
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: const Color(0xff06113c),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // Reduced border radius
+                onPressed: () {
+                  // Get.to(const LandlordsPage());
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xff06113c),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(8.0), // Reduced border radius
+                  ),
+                  minimumSize: const Size(double.infinity, 35),
+                  // Expand button to fill row space
+                  elevation: 5.0, // Text color
                 ),
-                minimumSize: const Size(double.infinity, 35), // Expand button to fill row space
-                elevation: 5.0, // Text color
-              ),
-              child: const Text('View Landlords'),
+                child: const Center(
+                  child: Row(
+                    children: [
+                      SizedBox(width: 20),
+                       Icon(
+                        Icons.handshake_outlined,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      Text('Donate us'),
+                    ],
+                  ),
+                ),
             ),
           ),
         ],

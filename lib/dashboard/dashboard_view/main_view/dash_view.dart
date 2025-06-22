@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/app_bar/appbar_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/buttom_nav/bottom_nav_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/buttons_group/button_grp_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/horizontal_scroll_cards/horizontal_crds_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/vertical_scroll_cards/vertical_crds_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/swipe_img_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/Titles/near_from_you.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/Titles/recomended.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/app_bar/appbar_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/buttom_nav/bottom_nav_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/buttons_group/button_grp_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/horizontal_scroll_cards/horizontal_crds_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/vertical_scroll_cards/vertical_crds_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image/swipe_img_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/Titles/near_from_you.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/Titles/recomended.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/search_bar/search_bar_controller.dart';
 import 'package:get/get.dart';
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -44,7 +44,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
       ),
-      floatingActionButton: const FloatingActionButtonWithBottomNav(),
+      bottomNavigationBar: BottomNavView(),
     );
   }
 }

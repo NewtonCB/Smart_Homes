@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/controllers/swiper_controller.dart';
+import 'package:Nestify/controllers/swiper_controller.dart';
 import 'swiper_controller.dart';
 
 class SwiperImageContainer extends StatelessWidget {

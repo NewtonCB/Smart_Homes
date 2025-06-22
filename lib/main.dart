@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renting_app/dashboard/dashboard_view/main_view/dash_view.dart';
-import 'package:renting_app/registration_login/controler/login_verification_screen.dart';
-import 'package:renting_app/splash_screens/splashscreen.dart';
+import 'package:Nestify/dashboard/dashboard_view/main_view/dash_view.dart';
+import 'package:Nestify/registration_login/controler/login_verification_screen.dart';
+import 'package:Nestify/splash_screens/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:renting_app/posting_page/post_view.dart';
-import 'package:renting_app/registration_login/view/login_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/image_model.dart';
-import 'package:renting_app/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
-import 'package:renting_app/registration_login/view/registration_view.dart';
-import 'package:renting_app/dashboard/dashboard_view/feed_page/feed_page_view.dart';
+import 'package:sizer/sizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Nestify/posting_page/post_view.dart';
+import 'package:Nestify/registration_login/view/login_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image/image_model.dart';
+import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
+import 'package:Nestify/registration_login/view/registration_view.dart';
+import 'package:Nestify/dashboard/dashboard_view/feed_page/feed_page_view.dart';
 
 
 void main() async {
@@ -45,21 +46,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Renting App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
-      ),
-      home: const SplashScreen(),
-      getPages: [
-        GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/home', page: () => const DashboardPage()),
-        GetPage(name: '/add_photo', page: () => PostingPage()),
-        GetPage(name: '/feed', page: () => FeedPage()),
-        GetPage(name: '/register', page: () => RegistrationPage()),
-        GetPage(name: '/verify_code', page: () => VerificationPage(verificationId: '')), // Handle as needed
-      ],
+    return ScreenUtilInit(
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return Sizer(
+        builder: (context, orientation, deviceType) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Renting App',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
+            ),
+            home: const SplashScreen(),
+            getPages: [
+              GetPage(name: '/login', page: () => LoginPage()),
+              GetPage(name: '/home', page: () => const DashboardPage()),
+              GetPage(name: '/add_photo', page: () => PostingPage()),
+              GetPage(name: '/feed', page: () => FeedPage()),
+              GetPage(name: '/register', page: () => RegistrationPage()),
+              GetPage(name: '/verify_code',
+                  page: () => VerificationPage(verificationId: '')),
+              // Handle as needed
+            ],
+          );
+        },
+        );
+      },
     );
   }
 }
