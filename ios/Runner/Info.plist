@@ -2,9 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
+    <key>MinimumOSVersion</key>
+    <string>14.0</string>  <!-- Change from 13.0 to 14.0 -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
 	<key>NSCameraUsageDescription</key>
     <string>We need access to your camera to pick images</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -12,7 +15,7 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to pick images</string>
 	<key>CFBundleDisplayName</key>
-	<string>Renting App</string>
+	<string>Nestify</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -52,5 +55,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSLocalNetworkUsageDescription</key>
+    <string>This app needs access to the local network for debugging.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_dartobservatory._tcp</string>
+    </array>
+
 </dict>
 </plist>

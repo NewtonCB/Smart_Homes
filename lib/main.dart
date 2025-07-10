@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,21 +14,13 @@ import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image
 import 'package:Nestify/dashboard/dashboard_view/dashbord_components/swipe_image/swiper_controller.dart';
 import 'package:Nestify/registration_login/view/registration_view.dart';
 import 'package:Nestify/dashboard/dashboard_view/feed_page/feed_page_view.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyChW-v8JQikIRr8Sb44JKNsxrzhESd8h_8",
-      authDomain: "houserental-29ec3.firebaseapp.com",
-      databaseURL: "https://houserental-29ec3-default-rtdb.firebaseio.com",
-      projectId: "houserental-29ec3",
-      storageBucket: "houserental-29ec3.appspot.com",
-      messagingSenderId: "875998543044",
-      appId: "1:875998543044:web:865927853a26dff02ddd91",
-      measurementId: "G-RW7TVSMQF3",
-    ),
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   final SwiperController swiperController = Get.put(SwiperController());
@@ -39,6 +32,12 @@ void main() async {
   ]);
 
   runApp(const MyApp());
+  // Trigger a local network call to force macOS to request permission
+  try {
+    await Socket.connect('localhost', 80).timeout(Duration(seconds: 2));
+  } catch (_) {
+    // Expected to fail; this is just to trigger the local network permission dialog
+  }
 }
 
 class MyApp extends StatelessWidget {
